@@ -6,7 +6,12 @@ require_once 'php-spreadsheetreader/SpreadsheetReaderFactory.php';
 require_once 'ShoppingItem.php';
 
 //$spreadsheetsFilePath = 'Kilopreisecopy.ods'; //or test.xls, test.csv, etc.
-$spreadsheetsFilePath = 'D:\Referenz\Haushalt\Kochen und Lebensmittel\Kilopreise.ods'; //or test.xls, test.csv, etc.
+$spreadsheetsFilePath = 'D:\Referenz\Haushalt\Kochen und Lebensmittel\Kilopreise.ods';
+
+if(!file_exists($spreadsheetsFilePath))
+{
+	$spreadsheetsFilePath="Kilopreise.ods";
+}
 $reader = SpreadsheetReaderFactory::reader($spreadsheetsFilePath);
 
 $sheets = $reader->read($spreadsheetsFilePath);
