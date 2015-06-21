@@ -1,0 +1,172 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width" />
+
+  <title>Kundenverwaltung</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="js/jquery/jquery.mobile-1.3.1.min.css" />
+
+
+  <script type="text/javascript" src="js/jquery/jquery-2.0.0.min.js"></script>
+  <script type="text/javascript" src="js/jquery/jquery.mobile-1.3.1.min.js"></script>
+  <script type="text/javascript" src="js/knockout/knockout-2.2.1.debug.js"></script>
+  <script type="text/javascript" src="js/customer.js"></script>
+  
+</head>
+
+<body>
+  <div data-role="page" id="customer" data-theme="b"> 
+
+      <!-- -------------------------------------- -->
+      <!-- 1. Seite - Kundenübersicht             -->
+      <!-- -------------------------------------- -->
+     <div class="tableclass" data-bind="visible: listVisible">
+        <div data-role="header" data-theme="b">
+            <h1>Kunden&uuml;bersicht</h1>
+        </div>
+
+        <div data-role="content">
+            <ul data-role="listview" data-filter="true" data-autodividers="false" data-theme="c" data-bind="foreach: items">
+                <li>
+                    <!-- <a data-bind='click: function(data, event) { $root.setCurrentCustomer(data, "./CustomerView.html", data, event)}'> href="#customerView" -->
+                    <a data-bind='click: $parent.selectItem'>
+                        <h5><span data-bind="text: firstname"></span> <span data-bind="text: lastname"></span></h5>
+                        <p><span data-bind="text: street"></span>, <span data-bind="text: city"></span></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div data-role="footer" data-position="fixed" data-id="customerFooter">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#" data-icon="search">Suchen</a></li>
+                    <li><a data-bind='click: addItem' data-icon="plus">Hinzuf&uuml;gen</a></li>
+                    <li><a href="./CustomerSet.html" data-icon="gear" data-transition="pop">Einstellungen</a></li>
+                    <li><a href="#" data-icon="delete">L&ouml;schen</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+     <!-- -------------------------------------- -->
+     <!-- 2. Seite - Kunden-Detail-Ansicht       -->
+     <!-- -------------------------------------- -->
+	<div data-bind="with: selectedItem, visible: !editVisible()">
+
+            <div data-role="header" data-theme="b">           
+            <h1>Kunden Ansicht</h1>
+            </div>
+
+            <div data-role="content" >
+            <ul data-role="listview" data-theme="d">
+                <li data-role="list-divider">Adresse</li>
+                <li>  
+                    <img src="images/man.png" class="ui-li-icon" />               
+                    <span data-bind="text: firstname"></span>&nbsp;<span data-bind="text: lastname"></span>
+                </li>
+
+			   <li data-bind="visible: street().length > 0">  				   
+					<img src="images/credit_card.png" class="ui-li-icon" />               
+					<span data-bind="text: street"></span>
+				</li>
+				
+				<li data-bind="visible: city().length > 0">  
+					<img src="images/home.png" class="ui-li-icon" />               
+					<span data-bind="text: city"></span>
+				</li>
+
+                <!-- <li data-role="list-divider" >Telefon</li>
+                    <li data-bind="foreach: phones">
+                        <img src="images/phone.png" class="ui-li-icon" />   
+                        <span data-bind='text: type'></span>  &nbsp;          
+                        <span data-bind='text: number'></span><br/>
+                    </li> 
+                <li data-role="list-divider" data-bind="visible: note().length > 0">Notiz</li>
+                <li data-bind="visible: note().length > 0">  
+                    <img src="images/Pencil.png" class="ui-li-icon" />               
+                    <span data-bind="text: note"></span>--> 
+                </li>
+            </ul>
+        </div>
+
+        <div data-role="footer" data-position="fixed" data-id="customerViewFooter">
+            <div data-role="navbar">
+                <ul>
+					<li><a data-bind="click: $parent.listItems" tabindex="1" data-icon="grid">&Uuml;bersicht</a></li>
+                    <li><a data-bind="click: $parent.editItem" tabindex="2" data-icon="star">Bearbeiten</a></li>
+                    <li><a data-bind="click: $parent.removeSelectedItem" data-icon="delete">L&ouml;schen</a></li>
+                    <li><a href="#" data-icon="arrow-u">Drucken</a></li>                    
+                        
+                </ul>
+            </div>
+        </div>
+    </div>
+
+     <!-- -------------------------------------- -->
+     <!-- 3. Seite - Kunden-Bearbeiten           -->
+     <!-- -------------------------------------- -->
+        <!-- <div data-bind="with: itemForEditing, visible: editVisible"> -->
+		<div data-bind="with: itemForEditing">
+            <div data-role="header" data-theme="b">
+                <h1>Kunden bearbeiten</h1>
+             </div>
+
+              <div data-role="content">
+                <ul data-role="listview" data-theme="d">
+                    <li data-role="list-divider">Adresse</li>
+                    <li>  
+                        <img src="images/man.png" class="ui-li-icon" />       
+                        <input type="text" name="firstname" id="firstname" data-bind="value: firstname" data-mini="true" placeholder="Vorname" />      
+                    </li>
+                    <li>  
+                        <img src="images/man.png" class="ui-li-icon" />       
+                        <input type="text" name="lastname" id="lastname" data-bind="value: lastname" data-mini="true" placeholder="Nachname" />      
+                    </li>
+                   <li>  
+                        <img src="images/credit_card.png" class="ui-li-icon" /> 
+                        <input type="text" name="street" id="street" data-bind="value: street" data-mini="true" placeholder="Straße" />              
+                    </li>
+                    <li>  
+                        <img src="images/home.png" class="ui-li-icon" /> 
+                        <input type="text" name="city" id="city" data-bind="value: city" data-mini="true" placeholder="Ort" />              
+                    </li>
+            <!--        <li data-role="list-divider">Telefon</li>
+                    <li>  
+                        <img src="images/phone.png" class="ui-li-icon" />    
+                        <input type="text" name="phoneoffice" id="phoneoffice" value="+49 (0) 45454/ 5454654" data-mini="true" placeholder="Büro" />          
+                    </li>
+                    <li>  
+                        <img src="images/phone.png" class="ui-li-icon" />   
+                        <input type="text" name="phoneprivate" id="phoneprivate" value="" data-mini="true" placeholder="Privat" />                
+                    </li>
+                    <li>  
+                        <img src="images/phone.png" class="ui-li-icon" />               
+                        <input type="text" name="phonemobile" id="phonemobile" value="" data-mini="true" placeholder="Mobil" />  
+                    </li>
+                    <li data-role="list-divider">Notiz</li>
+                    <li>  
+                        <img src="images/Pencil.png" class="ui-li-icon" />       
+                        <textarea name="textarea" data-bind="text: note" id="textarea-a"></textarea>
+                    </li>-->
+                </ul>
+            </div>
+
+            <div data-role="footer" data-position="fixed" data-id="customerEditFooter">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a data-bind="click: $parent.acceptItem" data-icon="home">Speichern</a></li>
+                        <li><a data-bind="click: $parent.revertItem" data-icon="delete" data-iconpos="left">Abbrechen</a></li>                        
+                    </ul>
+                </div>
+            </div>
+    </div>
+
+</body>
+
+
+</html>
+
