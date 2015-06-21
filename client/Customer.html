@@ -8,7 +8,7 @@
   <title>Kundenverwaltung</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="js/jquery/jquery.mobile-1.3.1.min.css" />
-
+ <script type="text/javascript" src="../Download/data.js"></script>
 
   <script type="text/javascript" src="js/jquery/jquery-2.0.0.min.js"></script>
   <script type="text/javascript" src="js/jquery/jquery.mobile-1.3.1.min.js"></script>
@@ -25,7 +25,7 @@
       <!-- -------------------------------------- -->
      <div class="tableclass" data-bind="visible: listVisible">
         <div data-role="header" data-theme="b">
-            <h1>Kunden&uuml;bersicht</h1>
+            <h1>Liste</h1>
         </div>
 
         <div data-role="content">
@@ -33,8 +33,15 @@
                 <li>
                     <!-- <a data-bind='click: function(data, event) { $root.setCurrentCustomer(data, "./CustomerView.html", data, event)}'> href="#customerView" -->
                     <a data-bind='click: $parent.selectItem'>
-                        <h5><span data-bind="text: firstname"></span> <span data-bind="text: lastname"></span></h5>
-                        <p><span data-bind="text: street"></span>, <span data-bind="text: city"></span></p>
+                        <h5><span data-bind="text: articlename"></span>&nbsp;&nbsp;
+						<!-- <span  data-bind="text: baseprice"></span>/<span data-bind="text: baseamount"></span>-->
+						</h5>
+                        <p>
+						<span data-bind="text: articledetails"></span><br>
+						<!-- <span data-bind="text: amountoffer"></span>/<span data-bind="text: priceoffer"></span>
+						<span data-bind="text: dateoffer"></span>@<span data-bind="text: storename"></span>-->
+						
+						</p>
                     </a>
                 </li>
             </ul>
@@ -45,7 +52,7 @@
                 <ul>
                     <li><a href="#" data-icon="search">Suchen</a></li>
                     <li><a data-bind='click: addItem' data-icon="plus">Hinzuf&uuml;gen</a></li>
-                    <li><a href="./CustomerSet.html" data-icon="gear" data-transition="pop">Einstellungen</a></li>
+                    <li><a href="file:///sdcard/Download/json/CustomerSet.html" data-icon="gear" data-transition="pop">Einstellungen</a></li>
                     <li><a href="#" data-icon="delete">L&ouml;schen</a></li>
                 </ul>
             </div>
@@ -58,7 +65,7 @@
 	<div data-bind="with: selectedItem, visible: !editVisible()">
 
             <div data-role="header" data-theme="b">           
-            <h1>Kunden Ansicht</h1>
+            <h1 data-bind="click: $parent.listItems" tabindex="1" >zur&uuml;ck</h1>
             </div>
 
             <div data-role="content" >
@@ -66,26 +73,49 @@
                 <li data-role="list-divider">Adresse</li>
                 <li>  
                     <img src="images/man.png" class="ui-li-icon" />               
-                    <span data-bind="text: firstname"></span>&nbsp;<span data-bind="text: lastname"></span>
+                    <span data-bind="text: articlename"></span>
                 </li>
 
-			   <li data-bind="visible: street().length > 0">  				   
+			   <li data-bind="visible: articledetails().length > 0">  				   
 					<img src="images/credit_card.png" class="ui-li-icon" />               
-					<span data-bind="text: street"></span>
+					<span data-bind="text: articledetails"></span>
 				</li>
-				
-				<li data-bind="visible: city().length > 0">  
-					<img src="images/home.png" class="ui-li-icon" />               
-					<span data-bind="text: city"></span>
+				<!--
+				<li>
+					<span data-bind="text: baseamount"></span>/<span data-bind="text: baseprice"></span>
 				</li>
 
-                <!-- <li data-role="list-divider" >Telefon</li>
-                    <li data-bind="foreach: phones">
-                        <img src="images/phone.png" class="ui-li-icon" />   
-                        <span data-bind='text: type'></span>  &nbsp;          
-                        <span data-bind='text: number'></span><br/>
+				<li>
+					<span data-bind="text: amountoffer"></span>/<span data-bind="text: priceoffer"></span>
+				</li>
+
+				
+				<li data-bind="visible: storename().length > 0">  
+					<img src="images/home.png" class="ui-li-icon" />               
+					<span data-bind="text: storename"></span>
+				</li>
+								
+				<li data-bind="visible: comment().length > 0">  
+					<img src="images/home.png" class="ui-li-icon" />               
+					<span data-bind="text: comment"></span>
+				</li>
+-->
+
+                 <li data-role="list-divider" >Aufzeichnungen</li>
+                    <li data-bind="foreach: records">
+						
+							<span data-bind="text: baseamount"></span>/<span data-bind="text: baseprice"></span>
+						
+							<span data-bind="text: amountoffer"></span>/<span data-bind="text: priceoffer"></span>
+						
+              
+							<span data-bind="text: storename"></span>
+														<span data-bind="text: dateoffer"></span>
+             
+							<span data-bind="text: comment"></span><br>
+					
                     </li> 
-                <li data-role="list-divider" data-bind="visible: note().length > 0">Notiz</li>
+                <!-- <li data-role="list-divider" data-bind="visible: note().length > 0">Notiz</li>
                 <li data-bind="visible: note().length > 0">  
                     <img src="images/Pencil.png" class="ui-li-icon" />               
                     <span data-bind="text: note"></span>--> 
@@ -120,11 +150,11 @@
                     <li data-role="list-divider">Adresse</li>
                     <li>  
                         <img src="images/man.png" class="ui-li-icon" />       
-                        <input type="text" name="firstname" id="firstname" data-bind="value: firstname" data-mini="true" placeholder="Vorname" />      
+                        <input type="text" name="articlename" id="articlename" data-bind="value: articlename" data-mini="true" placeholder="Vorname" />      
                     </li>
                     <li>  
                         <img src="images/man.png" class="ui-li-icon" />       
-                        <input type="text" name="lastname" id="lastname" data-bind="value: lastname" data-mini="true" placeholder="Nachname" />      
+                        <input type="text" name="baseamount" id="baseamount" data-bind="value: baseamount" data-mini="true" placeholder="Nachname" />      
                     </li>
                    <li>  
                         <img src="images/credit_card.png" class="ui-li-icon" /> 
