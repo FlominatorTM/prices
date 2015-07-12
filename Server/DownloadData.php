@@ -60,6 +60,7 @@ function processVegetables($list, $sheets, $i, $numRows)
 	$indexPrice = 6;
 	$indexBasePrice = 7;
 	$indexComment = 8;
+	$errorOccured = false;
 	
 	for($j=1;$j<$numRows;$j++)
 	{
@@ -88,7 +89,8 @@ function processVegetables($list, $sheets, $i, $numRows)
 			
 			if(!isset($sheets[$i][$j][$indexBasePrice]))
 			{
-				echo "Basispreis fehlt in Zeile ". ($j+1) . " von Sheet " . ($i+1);
+				echo "Basispreis fehlt in Zeile ". ($j+1) . " von Sheet " . ($i+1) . ': ' . $sheets[$i][$j][$indexDate] ;
+				$errorOccured = true;
 			}
 			$record->priceBase = $sheets[$i][$j][$indexBasePrice];
 			$record->amount = $sheets[$i][$j][$indexAmount];
@@ -100,6 +102,10 @@ function processVegetables($list, $sheets, $i, $numRows)
 			$list->Add($index, $articleName, $articleDetails, $sheets[$i][0][$indexBasePrice], $record);
 		}
 	}	
+	if($errorOccured)
+	{
+		die();
+	}
 }
 
 //have them here in order to see problems before output
